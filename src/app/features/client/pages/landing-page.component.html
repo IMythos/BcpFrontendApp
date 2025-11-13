@@ -1,0 +1,133 @@
+<section class="min-h-screen flex flex-col bg-white text-gray-800">
+  <header class="w-full fixed top-0 bg-white/80 backdrop-blur-md shadow-sm border-b border-gray-100 z-50">
+    <div class="max-w-[1280px] mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-2">
+        <img src="assets/bcp-logo.png" alt="Logo" class="h-8" />
+      </div>
+      <nav class="hidden md:flex items-center gap-8">
+        <a href="#" class="hover:text-blue-700 transition">Productos</a>
+        <a href="#" class="hover:text-blue-700 transition">Soluciones</a>
+        <a href="#" class="hover:text-blue-700 transition">Beneficios</a>
+        <a href="#" class="hover:text-blue-700 transition">Ayuda</a>
+
+        @if (isAuthenticated()) {
+          <div class="flex items-center gap-4">
+            <span class="text-sm text-gray-700 font-medium">
+              👤 {{ userName() }}
+            </span>
+            <button
+              (click)="handleAuthAction()"
+              class="px-4 py-2 bg-[#FF7800] text-white rounded-xl hover:bg-blue-800 transition font-medium">
+              Cerrar sesión
+            </button>
+          </div>
+        } @else {
+          <button
+            (click)="goToLogin()"
+            class="px-4 py-2 bg-[#FF7800] text-white rounded-xl hover:bg-blue-800 transition font-medium">
+            Iniciar sesión
+          </button>
+        }
+      </nav>
+      <button class="md:hidden text-gray-700" (click)="toggleMenu()">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6"
+          fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+  </header>
+  @if (menuOpen()) {
+    <div
+      class="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 transition-opacity duration-300"
+      [class.opacity-100]="!closingMenu()" [class.opacity-0]="closingMenu()"
+      (click)="toggleMenu()"></div>
+
+    <aside
+      class="fixed top-0 left-0 w-72 h-screen bg-white shadow-xl z-50 p-6 flex flex-col gap-6 transform transition-transform duration-300 ease-in-out"
+      [class.menu-slide-in]="!closingMenu()"
+      [class.menu-slide-out]="closingMenu()">
+      <button class="self-end text-gray-600 text-lg" (click)="toggleMenu()">✕</button>
+
+      <a href="#" class="hover:text-blue-700 transition">Productos</a>
+      <a href="#" class="hover:text-blue-700 transition">Soluciones</a>
+      <a href="#" class="hover:text-blue-700 transition">Beneficios</a>
+      <a href="#" class="hover:text-blue-700 transition">Ayuda</a>
+
+      <div class="mt-6 border-t pt-4 flex flex-col gap-3">
+        @if (isAuthenticated()) {
+          <button
+            (click)="handleAuthAction()"
+            class="px-4 py-2 bg-[#FF7800] text-white rounded-xl hover:bg-blue-800 transition font-medium">
+            Cerrar sesión
+          </button>
+        } @else {
+          <button
+            (click)="goToLogin()"
+            class="px-4 py-2 bg-[#FF7800] text-white rounded-xl hover:bg-blue-800 transition font-medium">
+            Iniciar sesión
+          </button>
+        }
+      </div>
+    </aside>
+  }
+  <section
+    class="flex flex-col md:flex-row items-center justify-between mt-[68px] px-6 py-12 bg-[#FCEFE5]">
+    <div class="max-w-[1280px] mx-auto flex flex-col md:flex-row items-center justify-between w-full">
+      <div class="max-w-lg text-center md:text-left">
+        <h2 class="text-3xl md:text-5xl font-semibold text-[#002A8D] leading-tight">
+          ¡Obtén tu Tarjeta de Credito solo con tu DNI!
+        </h2>
+        <p class="text-gray-600 mt-4">
+          Adquierela a interes comodos y sin sobrecomisiones de manera digital
+        </p>
+        <button
+          (click)="goToLogin()"
+          class="mt-6 px-8 py-3 bg-[#FF7800] text-white rounded-xl hover:bg-blue-800 transition font-medium shadow-md">
+          Solicítalo aquí
+        </button>
+      </div>
+      <div class="mt-10 md:mt-0">
+        <img src="assets/banner.png" alt="Banco Digital"
+          class="w-full max-w-md mx-auto scale-138" />
+      </div>
+    </div>
+  </section>
+  <section class="py-16 px-6 bg-white text-center">
+    <div class="max-w-[1280px] mx-auto">
+      <h3 class="text-3xl font-semibold text-blue-800 mb-10">
+        ¿Qué necesitas hacer hoy?
+      </h3>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 justify-center">
+        @for (servicio of [
+          { icon: 'account_balance', title: 'Abrir cuenta' },
+          { icon: 'credit_card', title: 'Obtener Tarjeta' },
+          { icon: 'attach_money', title: 'Solicitar Préstamo' },
+          { icon: 'trending_up', title: 'Adelantar Sueldo' },
+          { icon: 'security', title: 'Seguridad Financiera' },
+          { icon: 'smartphone', title: 'Banca Móvil' },
+          { icon: 'message', title: 'Atención Virtual' },
+          { icon: 'card_giftcard', title: 'Promociones' }
+        ]; track servicio.title) {
+          <div
+            class="bg-white shadow-md rounded-2xl p-6 flex flex-col items-center justify-center gap-2 hover:shadow-lg transition">
+            <div class="text-3xl">
+              <mat-icon>{{ servicio.icon }}</mat-icon>
+            </div>
+            <span class="text-blue-800 font-medium text-sm">
+              {{ servicio.title }}
+            </span>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+  <footer class="bg-gray-50 py-6 border-t border-gray-100">
+    <div class="max-w-[1280px] mx-auto text-center text-gray-500 text-sm">
+      © 2025 Banco Digital. Todos los derechos reservados.
+    </div>
+  </footer>
+
+</section>
